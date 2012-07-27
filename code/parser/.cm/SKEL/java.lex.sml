@@ -1,0 +1,2 @@
+Skeleton 5
+ae"JavaLexFun"i2aä¢Tokens"gp1c"Java_TOKENS"f3ÿä¢Vector"ä¢ErrorMsg"h3aä¢UserDeclarations"è0aä¢Internal"h1aä¢StartStates"ÿbbbd2bc2egp1ÿegp2ÿÿ*f6d"Int"Cd"Option"d"String"ÿÿ8ÿNf2ä¢Unsafe"ÿf5Cd"Char"ÿÿ‚9ÿ/ÿNæ0ÿƒ

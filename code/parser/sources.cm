@@ -1,0 +1,16 @@
+Group
+        signature PARSE
+        functor Parse
+is
+        $/basis.cm
+        $/ml-yacc-lib.cm
+        ../libs/sources.cm
+        ../ast/sources.cm
+
+        java.lex.sml
+
+        java.grm.sig
+        java.grm.sml
+
+        parse.sig
+        parse.fun

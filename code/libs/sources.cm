@@ -1,0 +1,23 @@
+Group 
+
+signature ERRORMSG
+signature FILE
+signature ERROR
+
+structure ErrorMsg
+structure File
+structure Error
+
+is
+
+$/basis.cm
+$/smlnj-lib.cm
+
+errormsg.sig
+errormsg.sml
+
+file.sig
+file.sml
+
+error.sig
+error.sml

@@ -1,0 +1,258 @@
+structure A = Ast
+
+local open A
+in 
+  structure Binop = A.Binop
+  structure Tipe = A.Tipe
+  structure Exp = A.Exp
+  structure Stm = A.Stm
+  structure Method = A.Method
+  structure Class = A.Class
+  structure MainClass = A.MainClass
+  structure Program = A.Program
+end
+
+%%
+%term
+    EOF
+|   CLASS
+|   MAIN
+|	LPAREN
+|	RPAREN
+|	LBRACK
+|	RBRACK
+|	LBRACE
+|	RBRACE
+|	STATIC
+|	PUBLIC
+|	VOID
+|	STRING
+|	EXTENDS
+|	SEMICOLON
+|	WHILE
+|	ELSE
+|	IF
+|	COMMA
+|	RETURN
+|	INT
+|	BOOLEAN
+|	NOT
+|	AND
+|	OR
+|	NEW
+|	TRUE
+|	FALSE
+|	THIS
+|	INTEGER_LITERAL of int
+|	DOT
+|	LENGTH
+|	ASSIGN
+|	SYSTEM_OUT_PRINTLN
+|	PLUS
+|	MINUS
+|	TIMES
+|	DIV
+|	MOD
+|	GT
+|	GE
+|	LT
+|	LE
+|	EQ
+|	NEQ
+|	ID of string
+		  
+%nonterm
+    prog        of  Program.t
+|   mainClass   of  MainClass.t
+|   classes     of  Class.t list
+|   class       of  Class.t
+|	cvars       of {ty: Tipe.t, id: string, prefix : string} list
+|	vars        of {ty: Tipe.t, id: string} list
+|	var	        of {ty: Tipe.t, id: string}
+|   methods     of  Method.t list
+|	method      of  Method.t
+|	statements  of  Stm.t list
+|	statement   of  Stm.t list
+|	tipe        of  Tipe.t
+|	exp         of  Exp.t
+|	formalRest  of {ty: Tipe.t, id: string}
+|	formalRests of {ty: Tipe.t, id: string} list
+|	formalList  of {ty: Tipe.t, id: string} list
+|	expRests    of  Exp.t list
+|	expRest     of  Exp.t
+|	expList     of  Exp.t list
+			  
+%pos int
+%verbose
+%start prog
+%eop EOF
+%noshift EOF
+%value ID ("bogus")
+
+%left RBRACK
+%left ASSIGN
+%left OR
+%left AND
+%left EQ NEQ
+%left LT GT LE GE
+%left MINUS	PLUS
+%left TIMES DIV   MOD
+%right NOT
+%left DOT
+%left LBRACK
+
+%name Java
+
+%header (functor JavaLrValsFun (structure Token: TOKEN structure Ast: AST))
+                          
+
+%%
+prog : mainClass classes (Program.T {mainClass = mainClass,
+							         classes = classes,
+							         pos = mainClassleft})
+
+mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE
+			vars
+			statements
+			RBRACE
+			RBRACE	(MainClass.T {name = ID1,
+								  arg = ID2,
+								  locals = vars,
+								  stms = statements,
+								  pos = CLASSleft})
+							     
+classes : ([]) 
+        | classes class	(classes @ [class])
+		
+class : CLASS ID LBRACE
+		cvars
+		methods
+		RBRACE ( Class.T {name = ID,
+						  extends = NONE,
+						  cvars = cvars,
+						  methods = methods,
+						  pos = CLASSleft})
+      | CLASS ID EXTENDS ID LBRACE
+	    cvars
+	    methods
+	    RBRACE ( Class.T {name = ID1,
+					      extends = SOME ID2,
+					      cvars = cvars,
+					      methods = methods,
+					      pos = CLASSleft})
+                
+cvars : ([])
+      | tipe
+        ID SEMICOLON
+        cvars ({ty = tipe,
+                 id = ID,
+                 prefix = ""} :: cvars )
+	     
+vars : ([])
+     | vars var(vars @ [var])
+
+var : tipe ID SEMICOLON ({	ty = tipe, 
+							id = ID })
+			     
+methods : ([])
+        | methods method (methods @ [method])
+		
+method : PUBLIC tipe ID LPAREN formalList RPAREN LBRACE
+				       vars
+				       statements
+				       RBRACE (	Method.T{
+						name = ID,
+						prefix = "",
+						rettype = tipe,
+						args = formalList,
+						locals = vars,
+						stms = statements,
+						pos = PUBLICleft
+						}
+					      )
+
+formalList : ([])
+           | tipe ID formalRests ({ty = tipe, 
+				                   id = ID1} :: formalRests)
+
+formalRests : ([])
+            | formalRests formalRest (formalRests @ [formalRest])
+		    
+formalRest : COMMA tipe ID ({ty = tipe,
+						     id = ID1})
+
+tipe : INT LBRACK RBRACK ( Tipe.ArrayInt)
+     | INT ( Tipe.Int)
+     | BOOLEAN ( Tipe.Bool)
+     | ID ( Tipe.Name ID1)
+	   
+statements : ([])
+           | statement statements (statement @ statements)
+
+statement :	LBRACE statements RBRACE (statements)
+          |	IF LPAREN exp RPAREN
+	        statement
+	        ELSE
+	        statement ([ Stm.If(exp, statement1, statement2, IFleft)])
+          | WHILE LPAREN exp RPAREN
+	        statement	([ Stm.While(exp, statement, WHILEleft)])
+          | SYSTEM_OUT_PRINTLN LPAREN exp RPAREN SEMICOLON ([ Stm.Print(exp, SYSTEM_OUT_PRINTLNleft)])
+          | THIS DOT ID ASSIGN exp SEMICOLON 
+              ([ Stm.AssignId {id = ID1,
+						       e = exp,
+						       pointer = "this",
+						       pos = IDleft}])
+          | ID ASSIGN exp SEMICOLON ([ Stm.AssignId {id = ID1,
+					                                 e = exp,
+					                                 pointer = "",
+					                                 pos = IDleft}])
+          | THIS DOT ID LBRACK exp RBRACK ASSIGN exp SEMICOLON 
+              ([ Stm.AssignArray {id = ID1,
+								  left = exp1,
+								  right = exp2,
+								  pointer = "this",
+								  pos = IDleft}])
+          | ID LBRACK exp RBRACK ASSIGN exp SEMICOLON 
+              ([ Stm.AssignArray {id = ID1,
+							      left = exp1,
+							      right = exp2,
+							      pointer = "",
+							      pos = IDleft}])
+          | RETURN exp SEMICOLON ( [Stm.Return(exp, RETURNleft)])
+	   
+exp : exp AND exp   ( Exp.Binop(exp1, Binop.And, exp2, expleft))
+    | exp OR exp    ( Exp.Binop(exp1, Binop.Or, exp2, expleft))
+    | exp PLUS exp  ( Exp.Binop(exp1, Binop.Plus, exp2, expleft))
+    | exp MINUS exp ( Exp.Binop(exp1, Binop.Minus, exp2, expleft))
+    | exp TIMES exp ( Exp.Binop(exp1, Binop.Times, exp2, expleft))
+    | exp MOD exp   ( Exp.Binop(exp1, Binop.Mod, exp2, expleft))
+    | exp DIV exp   ( Exp.Binop(exp1, Binop.Div, exp2, expleft))
+    | exp LT exp    ( Exp.Binop(exp1, Binop.Lt, exp2, expleft))
+    | exp GT exp	( Exp.Binop(exp1, Binop.Gt, exp2, expleft))
+    | exp LE exp	( Exp.Binop(exp1, Binop.Le, exp2, expleft))
+    | exp GE exp	( Exp.Binop(exp1, Binop.Ge, exp2, expleft))
+    | exp NEQ exp	( Exp.Binop(exp1, Binop.Neq, exp2, expleft))
+    | exp EQ exp	( Exp.Binop(exp1, Binop.Eq, exp2, expleft))
+    | exp LBRACK exp RBRACK 	( Exp.Array(exp1, exp2, expleft))
+    | exp DOT LENGTH 	( Exp.Length(exp, expleft))
+    | exp DOT ID LPAREN expList RPAREN	( Exp.Call(exp,  Tipe.Int, ID1,  Tipe.Int, expList, expleft))
+    | ID LPAREN expList RPAREN	( Exp.SimpleCall(ID, Tipe.Int, expList, IDleft))
+    | INTEGER_LITERAL	( Exp.Inti(INTEGER_LITERAL))
+    | TRUE          ( Exp.True)
+    | FALSE         ( Exp.False)
+    | ID            ( Exp.Var{id = ID,
+				              pointer = "",
+				              pos = IDleft})
+    | THIS          ( Exp.This THISleft)
+    | NEW INT LBRACK exp RBRACK	( Exp.NewArray(exp, NEWleft))
+    | NEW ID LPAREN RPAREN	( Exp.NewId(ID1, NEWleft))
+    | NOT exp       ( Exp.Not(exp, NOTleft))
+    | LPAREN exp RPAREN ( Exp.ParenExp(exp, LPARENleft) )
+
+expList : ([])
+        | exp expRests (exp::expRests)
+	    
+expRests : ([])
+         | expRests expRest (expRests@[expRest])
+
+expRest : COMMA exp (exp)

@@ -1,0 +1,2843 @@
+
+state 0:
+
+	prog : . mainClass classes 
+
+	CLASS	shift 2
+
+	prog	goto 174
+	mainClass	goto 1
+
+	.	error
+
+
+state 1:
+
+	prog : mainClass . classes 
+
+
+	classes	goto 3
+
+	.	reduce by rule 2
+
+
+state 2:
+
+	mainClass : CLASS . ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	ID	shift 4
+
+
+	.	error
+
+
+state 3:
+
+	prog : mainClass classes .  (reduce by rule 0)
+	classes : classes . class 
+
+	CLASS	shift 6
+
+	class	goto 5
+
+	.	reduce by rule 0
+
+
+state 4:
+
+	mainClass : CLASS ID . LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	LBRACE	shift 7
+
+
+	.	error
+
+
+state 5:
+
+	classes : classes class .  (reduce by rule 3)
+
+
+
+	.	reduce by rule 3
+
+
+state 6:
+
+	class : CLASS . ID LBRACE cvars methods RBRACE 
+	class : CLASS . ID EXTENDS ID LBRACE cvars methods RBRACE 
+
+	ID	shift 8
+
+
+	.	error
+
+
+state 7:
+
+	mainClass : CLASS ID LBRACE . PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	PUBLIC	shift 9
+
+
+	.	error
+
+
+state 8:
+
+	class : CLASS ID . LBRACE cvars methods RBRACE 
+	class : CLASS ID . EXTENDS ID LBRACE cvars methods RBRACE 
+
+	LBRACE	shift 11
+	EXTENDS	shift 10
+
+
+	.	error
+
+
+state 9:
+
+	mainClass : CLASS ID LBRACE PUBLIC . STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	STATIC	shift 12
+
+
+	.	error
+
+
+state 10:
+
+	class : CLASS ID EXTENDS . ID LBRACE cvars methods RBRACE 
+
+	ID	shift 13
+
+
+	.	error
+
+
+state 11:
+
+	class : CLASS ID LBRACE . cvars methods RBRACE 
+
+	INT	shift 18
+	BOOLEAN	shift 17
+	ID	shift 16
+
+	cvars	goto 15
+	tipe	goto 14
+
+	.	reduce by rule 6
+
+
+state 12:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC . VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	VOID	shift 19
+
+
+	.	error
+
+
+state 13:
+
+	class : CLASS ID EXTENDS ID . LBRACE cvars methods RBRACE 
+
+	LBRACE	shift 20
+
+
+	.	error
+
+
+state 14:
+
+	cvars : tipe . ID SEMICOLON cvars 
+
+	ID	shift 21
+
+
+	.	error
+
+
+state 15:
+
+	class : CLASS ID LBRACE cvars . methods RBRACE 
+
+
+	methods	goto 22
+
+	.	reduce by rule 11
+
+
+state 16:
+
+	tipe : ID .  (reduce by rule 22)
+
+
+
+	.	reduce by rule 22
+
+
+state 17:
+
+	tipe : BOOLEAN .  (reduce by rule 21)
+
+
+
+	.	reduce by rule 21
+
+
+state 18:
+
+	tipe : INT . LBRACK RBRACK 
+	tipe : INT .  (reduce by rule 20)
+
+	LBRACK	shift 23
+
+
+	.	reduce by rule 20
+
+
+state 19:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID . MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	MAIN	shift 24
+
+
+	.	error
+
+
+state 20:
+
+	class : CLASS ID EXTENDS ID LBRACE . cvars methods RBRACE 
+
+	INT	shift 18
+	BOOLEAN	shift 17
+	ID	shift 16
+
+	cvars	goto 25
+	tipe	goto 14
+
+	.	reduce by rule 6
+
+
+state 21:
+
+	cvars : tipe ID . SEMICOLON cvars 
+
+	SEMICOLON	shift 26
+
+
+	.	error
+
+
+state 22:
+
+	class : CLASS ID LBRACE cvars methods . RBRACE 
+	methods : methods . method 
+
+	RBRACE	shift 29
+	PUBLIC	shift 28
+
+	method	goto 27
+
+	.	error
+
+
+state 23:
+
+	tipe : INT LBRACK . RBRACK 
+
+	RBRACK	shift 30
+
+
+	.	error
+
+
+state 24:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN . LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	LPAREN	shift 31
+
+
+	.	error
+
+
+state 25:
+
+	class : CLASS ID EXTENDS ID LBRACE cvars . methods RBRACE 
+
+
+	methods	goto 32
+
+	.	reduce by rule 11
+
+
+state 26:
+
+	cvars : tipe ID SEMICOLON . cvars 
+
+	INT	shift 18
+	BOOLEAN	shift 17
+	ID	shift 16
+
+	cvars	goto 33
+	tipe	goto 14
+
+	.	reduce by rule 6
+
+
+state 27:
+
+	methods : methods method .  (reduce by rule 12)
+
+
+
+	.	reduce by rule 12
+
+
+state 28:
+
+	method : PUBLIC . tipe ID LPAREN formalList RPAREN LBRACE vars statements RBRACE 
+
+	INT	shift 18
+	BOOLEAN	shift 17
+	ID	shift 16
+
+	tipe	goto 34
+
+	.	error
+
+
+state 29:
+
+	class : CLASS ID LBRACE cvars methods RBRACE .  (reduce by rule 4)
+
+
+
+	.	reduce by rule 4
+
+
+state 30:
+
+	tipe : INT LBRACK RBRACK .  (reduce by rule 19)
+
+
+
+	.	reduce by rule 19
+
+
+state 31:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN . STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	STRING	shift 35
+
+
+	.	error
+
+
+state 32:
+
+	class : CLASS ID EXTENDS ID LBRACE cvars methods . RBRACE 
+	methods : methods . method 
+
+	RBRACE	shift 36
+	PUBLIC	shift 28
+
+	method	goto 27
+
+	.	error
+
+
+state 33:
+
+	cvars : tipe ID SEMICOLON cvars .  (reduce by rule 7)
+
+
+
+	.	reduce by rule 7
+
+
+state 34:
+
+	method : PUBLIC tipe . ID LPAREN formalList RPAREN LBRACE vars statements RBRACE 
+
+	ID	shift 37
+
+
+	.	error
+
+
+state 35:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING . LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	LBRACK	shift 38
+
+
+	.	error
+
+
+state 36:
+
+	class : CLASS ID EXTENDS ID LBRACE cvars methods RBRACE .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 37:
+
+	method : PUBLIC tipe ID . LPAREN formalList RPAREN LBRACE vars statements RBRACE 
+
+	LPAREN	shift 39
+
+
+	.	error
+
+
+state 38:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK . RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	RBRACK	shift 40
+
+
+	.	error
+
+
+state 39:
+
+	method : PUBLIC tipe ID LPAREN . formalList RPAREN LBRACE vars statements RBRACE 
+
+	INT	shift 18
+	BOOLEAN	shift 17
+	ID	shift 16
+
+	tipe	goto 42
+	formalList	goto 41
+
+	.	reduce by rule 14
+
+
+state 40:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK . ID RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	ID	shift 43
+
+
+	.	error
+
+
+state 41:
+
+	method : PUBLIC tipe ID LPAREN formalList . RPAREN LBRACE vars statements RBRACE 
+
+	RPAREN	shift 44
+
+
+	.	error
+
+
+state 42:
+
+	formalList : tipe . ID formalRests 
+
+	ID	shift 45
+
+
+	.	error
+
+
+state 43:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID . RPAREN LBRACE vars statements RBRACE RBRACE 
+
+	RPAREN	shift 46
+
+
+	.	error
+
+
+state 44:
+
+	method : PUBLIC tipe ID LPAREN formalList RPAREN . LBRACE vars statements RBRACE 
+
+	LBRACE	shift 47
+
+
+	.	error
+
+
+state 45:
+
+	formalList : tipe ID . formalRests 
+
+
+	formalRests	goto 48
+
+	.	reduce by rule 16
+
+
+state 46:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN . LBRACE vars statements RBRACE RBRACE 
+
+	LBRACE	shift 49
+
+
+	.	error
+
+
+state 47:
+
+	method : PUBLIC tipe ID LPAREN formalList RPAREN LBRACE . vars statements RBRACE 
+
+
+	vars	goto 50
+
+	.	reduce by rule 8
+
+
+state 48:
+
+	formalRests : formalRests . formalRest 
+	formalList : tipe ID formalRests .  (reduce by rule 15)
+
+	COMMA	shift 52
+
+	formalRest	goto 51
+
+	.	reduce by rule 15
+
+
+state 49:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE . vars statements RBRACE RBRACE 
+
+
+	vars	goto 53
+
+	.	reduce by rule 8
+
+
+state 50:
+
+	vars : vars . var 
+	method : PUBLIC tipe ID LPAREN formalList RPAREN LBRACE vars . statements RBRACE 
+
+	LBRACE	shift 64
+	WHILE	shift 63
+	IF	shift 62
+	RETURN	shift 61
+	INT	shift 18
+	BOOLEAN	shift 17
+	THIS	shift 60
+	SYSTEM_OUT_PRINTLN	shift 59
+	ID	shift 58
+
+	var	goto 57
+	statements	goto 56
+	statement	goto 55
+	tipe	goto 54
+
+	.	reduce by rule 23
+
+
+state 51:
+
+	formalRests : formalRests formalRest .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
+state 52:
+
+	formalRest : COMMA . tipe ID 
+
+	INT	shift 18
+	BOOLEAN	shift 17
+	ID	shift 16
+
+	tipe	goto 65
+
+	.	error
+
+
+state 53:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars . statements RBRACE RBRACE 
+	vars : vars . var 
+
+	LBRACE	shift 64
+	WHILE	shift 63
+	IF	shift 62
+	RETURN	shift 61
+	INT	shift 18
+	BOOLEAN	shift 17
+	THIS	shift 60
+	SYSTEM_OUT_PRINTLN	shift 59
+	ID	shift 58
+
+	var	goto 57
+	statements	goto 66
+	statement	goto 55
+	tipe	goto 54
+
+	.	reduce by rule 23
+
+
+state 54:
+
+	var : tipe . ID SEMICOLON 
+
+	ID	shift 67
+
+
+	.	error
+
+
+state 55:
+
+	statements : statement . statements 
+
+	LBRACE	shift 64
+	WHILE	shift 63
+	IF	shift 62
+	RETURN	shift 61
+	THIS	shift 60
+	SYSTEM_OUT_PRINTLN	shift 59
+	ID	shift 69
+
+	statements	goto 68
+	statement	goto 55
+
+	.	reduce by rule 23
+
+
+state 56:
+
+	method : PUBLIC tipe ID LPAREN formalList RPAREN LBRACE vars statements . RBRACE 
+
+	RBRACE	shift 70
+
+
+	.	error
+
+
+state 57:
+
+	vars : vars var .  (reduce by rule 9)
+
+
+
+	.	reduce by rule 9
+
+
+state 58:
+
+	statement : ID . ASSIGN exp SEMICOLON 
+	statement : ID . LBRACK exp RBRACK ASSIGN exp SEMICOLON 
+	tipe : ID .  (reduce by rule 22)
+
+	LBRACK	shift 72
+	ASSIGN	shift 71
+
+
+	.	reduce by rule 22
+
+
+state 59:
+
+	statement : SYSTEM_OUT_PRINTLN . LPAREN exp RPAREN SEMICOLON 
+
+	LPAREN	shift 73
+
+
+	.	error
+
+
+state 60:
+
+	statement : THIS . DOT ID ASSIGN exp SEMICOLON 
+	statement : THIS . DOT ID LBRACK exp RBRACK ASSIGN exp SEMICOLON 
+
+	DOT	shift 74
+
+
+	.	error
+
+
+state 61:
+
+	statement : RETURN . exp SEMICOLON 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 75
+
+	.	error
+
+
+state 62:
+
+	statement : IF . LPAREN exp RPAREN statement ELSE statement 
+
+	LPAREN	shift 84
+
+
+	.	error
+
+
+state 63:
+
+	statement : WHILE . LPAREN exp RPAREN statement 
+
+	LPAREN	shift 85
+
+
+	.	error
+
+
+state 64:
+
+	statement : LBRACE . statements RBRACE 
+
+	LBRACE	shift 64
+	WHILE	shift 63
+	IF	shift 62
+	RETURN	shift 61
+	THIS	shift 60
+	SYSTEM_OUT_PRINTLN	shift 59
+	ID	shift 69
+
+	statements	goto 86
+	statement	goto 55
+
+	.	reduce by rule 23
+
+
+state 65:
+
+	formalRest : COMMA tipe . ID 
+
+	ID	shift 87
+
+
+	.	error
+
+
+state 66:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements . RBRACE RBRACE 
+
+	RBRACE	shift 88
+
+
+	.	error
+
+
+state 67:
+
+	var : tipe ID . SEMICOLON 
+
+	SEMICOLON	shift 89
+
+
+	.	error
+
+
+state 68:
+
+	statements : statement statements .  (reduce by rule 24)
+
+
+
+	.	reduce by rule 24
+
+
+state 69:
+
+	statement : ID . ASSIGN exp SEMICOLON 
+	statement : ID . LBRACK exp RBRACK ASSIGN exp SEMICOLON 
+
+	LBRACK	shift 72
+	ASSIGN	shift 71
+
+
+	.	error
+
+
+state 70:
+
+	method : PUBLIC tipe ID LPAREN formalList RPAREN LBRACE vars statements RBRACE .  (reduce by rule 13)
+
+
+
+	.	reduce by rule 13
+
+
+state 71:
+
+	statement : ID ASSIGN . exp SEMICOLON 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 90
+
+	.	error
+
+
+state 72:
+
+	statement : ID LBRACK . exp RBRACK ASSIGN exp SEMICOLON 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 91
+
+	.	error
+
+
+state 73:
+
+	statement : SYSTEM_OUT_PRINTLN LPAREN . exp RPAREN SEMICOLON 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 92
+
+	.	error
+
+
+state 74:
+
+	statement : THIS DOT . ID ASSIGN exp SEMICOLON 
+	statement : THIS DOT . ID LBRACK exp RBRACK ASSIGN exp SEMICOLON 
+
+	ID	shift 93
+
+
+	.	error
+
+
+state 75:
+
+	statement : RETURN exp . SEMICOLON 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	SEMICOLON	shift 108
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 76:
+
+	exp : ID . LPAREN expList RPAREN 
+	exp : ID .  (reduce by rule 54)
+
+	LPAREN	shift 110
+
+
+	.	reduce by rule 54
+
+
+state 77:
+
+	exp : INTEGER_LITERAL .  (reduce by rule 51)
+
+
+
+	.	reduce by rule 51
+
+
+state 78:
+
+	exp : THIS .  (reduce by rule 55)
+
+
+
+	.	reduce by rule 55
+
+
+state 79:
+
+	exp : FALSE .  (reduce by rule 53)
+
+
+
+	.	reduce by rule 53
+
+
+state 80:
+
+	exp : TRUE .  (reduce by rule 52)
+
+
+
+	.	reduce by rule 52
+
+
+state 81:
+
+	exp : NEW . INT LBRACK exp RBRACK 
+	exp : NEW . ID LPAREN RPAREN 
+
+	INT	shift 112
+	ID	shift 111
+
+
+	.	error
+
+
+state 82:
+
+	exp : NOT . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 113
+
+	.	error
+
+
+state 83:
+
+	exp : LPAREN . exp RPAREN 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 114
+
+	.	error
+
+
+state 84:
+
+	statement : IF LPAREN . exp RPAREN statement ELSE statement 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 115
+
+	.	error
+
+
+state 85:
+
+	statement : WHILE LPAREN . exp RPAREN statement 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 116
+
+	.	error
+
+
+state 86:
+
+	statement : LBRACE statements . RBRACE 
+
+	RBRACE	shift 117
+
+
+	.	error
+
+
+state 87:
+
+	formalRest : COMMA tipe ID .  (reduce by rule 18)
+
+
+
+	.	reduce by rule 18
+
+
+state 88:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE . RBRACE 
+
+	RBRACE	shift 118
+
+
+	.	error
+
+
+state 89:
+
+	var : tipe ID SEMICOLON .  (reduce by rule 10)
+
+
+
+	.	reduce by rule 10
+
+
+state 90:
+
+	statement : ID ASSIGN exp . SEMICOLON 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	SEMICOLON	shift 119
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 91:
+
+	statement : ID LBRACK exp . RBRACK ASSIGN exp SEMICOLON 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	RBRACK	shift 120
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 92:
+
+	statement : SYSTEM_OUT_PRINTLN LPAREN exp . RPAREN SEMICOLON 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	RPAREN	shift 121
+	LBRACK	shift 109
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 93:
+
+	statement : THIS DOT ID . ASSIGN exp SEMICOLON 
+	statement : THIS DOT ID . LBRACK exp RBRACK ASSIGN exp SEMICOLON 
+
+	LBRACK	shift 123
+	ASSIGN	shift 122
+
+
+	.	error
+
+
+state 94:
+
+	exp : exp NEQ . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 124
+
+	.	error
+
+
+state 95:
+
+	exp : exp EQ . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 125
+
+	.	error
+
+
+state 96:
+
+	exp : exp LE . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 126
+
+	.	error
+
+
+state 97:
+
+	exp : exp LT . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 127
+
+	.	error
+
+
+state 98:
+
+	exp : exp GE . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 128
+
+	.	error
+
+
+state 99:
+
+	exp : exp GT . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 129
+
+	.	error
+
+
+state 100:
+
+	exp : exp MOD . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 130
+
+	.	error
+
+
+state 101:
+
+	exp : exp DIV . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 131
+
+	.	error
+
+
+state 102:
+
+	exp : exp TIMES . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 132
+
+	.	error
+
+
+state 103:
+
+	exp : exp MINUS . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 133
+
+	.	error
+
+
+state 104:
+
+	exp : exp PLUS . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 134
+
+	.	error
+
+
+state 105:
+
+	exp : exp DOT . LENGTH 
+	exp : exp DOT . ID LPAREN expList RPAREN 
+
+	LENGTH	shift 136
+	ID	shift 135
+
+
+	.	error
+
+
+state 106:
+
+	exp : exp OR . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 137
+
+	.	error
+
+
+state 107:
+
+	exp : exp AND . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 138
+
+	.	error
+
+
+state 108:
+
+	statement : RETURN exp SEMICOLON .  (reduce by rule 33)
+
+
+
+	.	reduce by rule 33
+
+
+state 109:
+
+	exp : exp LBRACK . exp RBRACK 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 139
+
+	.	error
+
+
+state 110:
+
+	exp : ID LPAREN . expList RPAREN 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 141
+	expList	goto 140
+
+	.	reduce by rule 60
+
+
+state 111:
+
+	exp : NEW ID . LPAREN RPAREN 
+
+	LPAREN	shift 142
+
+
+	.	error
+
+
+state 112:
+
+	exp : NEW INT . LBRACK exp RBRACK 
+
+	LBRACK	shift 143
+
+
+	.	error
+
+
+state 113:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+	exp : NOT exp .  (reduce by rule 58)
+
+	LBRACK	shift 109
+	DOT	shift 105
+
+
+	.	reduce by rule 58
+
+
+state 114:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+	exp : LPAREN exp . RPAREN 
+
+	RPAREN	shift 144
+	LBRACK	shift 109
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 115:
+
+	statement : IF LPAREN exp . RPAREN statement ELSE statement 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	RPAREN	shift 145
+	LBRACK	shift 109
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 116:
+
+	statement : WHILE LPAREN exp . RPAREN statement 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	RPAREN	shift 146
+	LBRACK	shift 109
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 117:
+
+	statement : LBRACE statements RBRACE .  (reduce by rule 25)
+
+
+
+	.	reduce by rule 25
+
+
+state 118:
+
+	mainClass : CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE vars statements RBRACE RBRACE .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 119:
+
+	statement : ID ASSIGN exp SEMICOLON .  (reduce by rule 30)
+
+
+
+	.	reduce by rule 30
+
+
+state 120:
+
+	statement : ID LBRACK exp RBRACK . ASSIGN exp SEMICOLON 
+
+	ASSIGN	shift 147
+
+
+	.	error
+
+
+state 121:
+
+	statement : SYSTEM_OUT_PRINTLN LPAREN exp RPAREN . SEMICOLON 
+
+	SEMICOLON	shift 148
+
+
+	.	error
+
+
+state 122:
+
+	statement : THIS DOT ID ASSIGN . exp SEMICOLON 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 149
+
+	.	error
+
+
+state 123:
+
+	statement : THIS DOT ID LBRACK . exp RBRACK ASSIGN exp SEMICOLON 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 150
+
+	.	error
+
+
+state 124:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp NEQ exp .  (reduce by rule 45)
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+
+
+	.	reduce by rule 45
+
+
+state 125:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp EQ exp .  (reduce by rule 46)
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+
+
+	.	reduce by rule 46
+
+
+state 126:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp LE exp .  (reduce by rule 43)
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+
+
+	.	reduce by rule 43
+
+
+state 127:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp LT exp .  (reduce by rule 41)
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+
+
+	.	reduce by rule 41
+
+
+state 128:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp GE exp .  (reduce by rule 44)
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+
+
+	.	reduce by rule 44
+
+
+state 129:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp GT exp .  (reduce by rule 42)
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+
+
+	.	reduce by rule 42
+
+
+state 130:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp MOD exp .  (reduce by rule 39)
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+
+
+	.	reduce by rule 39
+
+
+state 131:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp DIV exp .  (reduce by rule 40)
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+
+
+	.	reduce by rule 40
+
+
+state 132:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp TIMES exp .  (reduce by rule 38)
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+
+
+	.	reduce by rule 38
+
+
+state 133:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp MINUS exp .  (reduce by rule 37)
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+
+
+	.	reduce by rule 37
+
+
+state 134:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp PLUS exp .  (reduce by rule 36)
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+
+
+	.	reduce by rule 36
+
+
+state 135:
+
+	exp : exp DOT ID . LPAREN expList RPAREN 
+
+	LPAREN	shift 151
+
+
+	.	error
+
+
+state 136:
+
+	exp : exp DOT LENGTH .  (reduce by rule 48)
+
+
+
+	.	reduce by rule 48
+
+
+state 137:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp OR exp .  (reduce by rule 35)
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	AND	shift 107
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	reduce by rule 35
+
+
+state 138:
+
+	exp : exp . AND exp 
+	exp : exp AND exp .  (reduce by rule 34)
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	reduce by rule 34
+
+
+state 139:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp LBRACK exp . RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	RBRACK	shift 152
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 140:
+
+	exp : ID LPAREN expList . RPAREN 
+
+	RPAREN	shift 153
+
+
+	.	error
+
+
+state 141:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+	expList : exp . expRests 
+
+	LBRACK	shift 109
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+	expRests	goto 154
+
+	.	reduce by rule 62
+
+
+state 142:
+
+	exp : NEW ID LPAREN . RPAREN 
+
+	RPAREN	shift 155
+
+
+	.	error
+
+
+state 143:
+
+	exp : NEW INT LBRACK . exp RBRACK 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 156
+
+	.	error
+
+
+state 144:
+
+	exp : LPAREN exp RPAREN .  (reduce by rule 59)
+
+
+
+	.	reduce by rule 59
+
+
+state 145:
+
+	statement : IF LPAREN exp RPAREN . statement ELSE statement 
+
+	LBRACE	shift 64
+	WHILE	shift 63
+	IF	shift 62
+	RETURN	shift 61
+	THIS	shift 60
+	SYSTEM_OUT_PRINTLN	shift 59
+	ID	shift 69
+
+	statement	goto 157
+
+	.	error
+
+
+state 146:
+
+	statement : WHILE LPAREN exp RPAREN . statement 
+
+	LBRACE	shift 64
+	WHILE	shift 63
+	IF	shift 62
+	RETURN	shift 61
+	THIS	shift 60
+	SYSTEM_OUT_PRINTLN	shift 59
+	ID	shift 69
+
+	statement	goto 158
+
+	.	error
+
+
+state 147:
+
+	statement : ID LBRACK exp RBRACK ASSIGN . exp SEMICOLON 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 159
+
+	.	error
+
+
+state 148:
+
+	statement : SYSTEM_OUT_PRINTLN LPAREN exp RPAREN SEMICOLON .  (reduce by rule 28)
+
+
+
+	.	reduce by rule 28
+
+
+state 149:
+
+	statement : THIS DOT ID ASSIGN exp . SEMICOLON 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	SEMICOLON	shift 160
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 150:
+
+	statement : THIS DOT ID LBRACK exp . RBRACK ASSIGN exp SEMICOLON 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	RBRACK	shift 161
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 151:
+
+	exp : exp DOT ID LPAREN . expList RPAREN 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 141
+	expList	goto 162
+
+	.	reduce by rule 60
+
+
+state 152:
+
+	exp : exp LBRACK exp RBRACK .  (reduce by rule 47)
+
+
+
+	.	reduce by rule 47
+
+
+state 153:
+
+	exp : ID LPAREN expList RPAREN .  (reduce by rule 50)
+
+
+
+	.	reduce by rule 50
+
+
+state 154:
+
+	expRests : expRests . expRest 
+	expList : exp expRests .  (reduce by rule 61)
+
+	COMMA	shift 164
+
+	expRest	goto 163
+
+	.	reduce by rule 61
+
+
+state 155:
+
+	exp : NEW ID LPAREN RPAREN .  (reduce by rule 57)
+
+
+
+	.	reduce by rule 57
+
+
+state 156:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+	exp : NEW INT LBRACK exp . RBRACK 
+
+	LBRACK	shift 109
+	RBRACK	shift 165
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 157:
+
+	statement : IF LPAREN exp RPAREN statement . ELSE statement 
+
+	ELSE	shift 166
+
+
+	.	error
+
+
+state 158:
+
+	statement : WHILE LPAREN exp RPAREN statement .  (reduce by rule 27)
+
+
+
+	.	reduce by rule 27
+
+
+state 159:
+
+	statement : ID LBRACK exp RBRACK ASSIGN exp . SEMICOLON 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	SEMICOLON	shift 167
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 160:
+
+	statement : THIS DOT ID ASSIGN exp SEMICOLON .  (reduce by rule 29)
+
+
+
+	.	reduce by rule 29
+
+
+state 161:
+
+	statement : THIS DOT ID LBRACK exp RBRACK . ASSIGN exp SEMICOLON 
+
+	ASSIGN	shift 168
+
+
+	.	error
+
+
+state 162:
+
+	exp : exp DOT ID LPAREN expList . RPAREN 
+
+	RPAREN	shift 169
+
+
+	.	error
+
+
+state 163:
+
+	expRests : expRests expRest .  (reduce by rule 63)
+
+
+
+	.	reduce by rule 63
+
+
+state 164:
+
+	expRest : COMMA . exp 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 170
+
+	.	error
+
+
+state 165:
+
+	exp : NEW INT LBRACK exp RBRACK .  (reduce by rule 56)
+
+
+
+	.	reduce by rule 56
+
+
+state 166:
+
+	statement : IF LPAREN exp RPAREN statement ELSE . statement 
+
+	LBRACE	shift 64
+	WHILE	shift 63
+	IF	shift 62
+	RETURN	shift 61
+	THIS	shift 60
+	SYSTEM_OUT_PRINTLN	shift 59
+	ID	shift 69
+
+	statement	goto 171
+
+	.	error
+
+
+state 167:
+
+	statement : ID LBRACK exp RBRACK ASSIGN exp SEMICOLON .  (reduce by rule 32)
+
+
+
+	.	reduce by rule 32
+
+
+state 168:
+
+	statement : THIS DOT ID LBRACK exp RBRACK ASSIGN . exp SEMICOLON 
+
+	LPAREN	shift 83
+	NOT	shift 82
+	NEW	shift 81
+	TRUE	shift 80
+	FALSE	shift 79
+	THIS	shift 78
+	INTEGER_LITERAL	shift 77
+	ID	shift 76
+
+	exp	goto 172
+
+	.	error
+
+
+state 169:
+
+	exp : exp DOT ID LPAREN expList RPAREN .  (reduce by rule 49)
+
+
+
+	.	reduce by rule 49
+
+
+state 170:
+
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+	expRest : COMMA exp .  (reduce by rule 64)
+
+	LBRACK	shift 109
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	reduce by rule 64
+
+
+state 171:
+
+	statement : IF LPAREN exp RPAREN statement ELSE statement .  (reduce by rule 26)
+
+
+
+	.	reduce by rule 26
+
+
+state 172:
+
+	statement : THIS DOT ID LBRACK exp RBRACK ASSIGN exp . SEMICOLON 
+	exp : exp . AND exp 
+	exp : exp . OR exp 
+	exp : exp . PLUS exp 
+	exp : exp . MINUS exp 
+	exp : exp . TIMES exp 
+	exp : exp . MOD exp 
+	exp : exp . DIV exp 
+	exp : exp . LT exp 
+	exp : exp . GT exp 
+	exp : exp . LE exp 
+	exp : exp . GE exp 
+	exp : exp . NEQ exp 
+	exp : exp . EQ exp 
+	exp : exp . LBRACK exp RBRACK 
+	exp : exp . DOT LENGTH 
+	exp : exp . DOT ID LPAREN expList RPAREN 
+
+	LBRACK	shift 109
+	SEMICOLON	shift 173
+	AND	shift 107
+	OR	shift 106
+	DOT	shift 105
+	PLUS	shift 104
+	MINUS	shift 103
+	TIMES	shift 102
+	DIV	shift 101
+	MOD	shift 100
+	GT	shift 99
+	GE	shift 98
+	LT	shift 97
+	LE	shift 96
+	EQ	shift 95
+	NEQ	shift 94
+
+
+	.	error
+
+
+state 173:
+
+	statement : THIS DOT ID LBRACK exp RBRACK ASSIGN exp SEMICOLON .  (reduce by rule 31)
+
+
+
+	.	reduce by rule 31
+
+
+state 174:
+
+
+	EOF	accept
+
+
+	.	error
+
+450 of 888 action table entries left after compaction
+71 goto table entries

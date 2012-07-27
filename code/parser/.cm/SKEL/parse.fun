@@ -1,0 +1,2 @@
+Skeleton 5
+ae"Parse"i1aä¢S"gp1c"PARSE_STRUCTS"jh5Cegp1ÿf5Cä¢Ast"d"String"d"TextIO"d"ErrorMsg"ä¢LrParser"Naä¢JavaLrVals"jh2aä¢Token"gp2ÿÿ1aÿ0gp1ÿ0gp1e"JavaLrValsFun"aä¢Lex"jh1aä¢Tokens"gp2ÿ ÿ‚(gp1e"JavaLexFun"ad"CP"jh3aä¢ParserData"gp2ÿ ÿƒaÿ‚gp1ÿ‚aÿgp1ÿgp1e"Join"Ngp1c"PARSE"

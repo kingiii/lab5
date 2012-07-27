@@ -1,0 +1,15 @@
+Group
+        signature MAIN
+        structure Main
+is
+        $/basis.cm
+        $/smlnj-lib.cm
+
+        ../libs/sources.cm
+        ../ast/sources.cm
+        ../parser/sources.cm
+        ../c/sources.cm
+        ../java2c/sources.cm
+        
+        main.sig
+        main.sml

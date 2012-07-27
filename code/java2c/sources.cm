@@ -1,0 +1,23 @@
+Group 
+signature AST2
+signature GENAST2
+signature GENC
+	   
+functor Ast2   
+functor genAST2  
+functor genC  
+	    is
+            $/basis.cm
+            $/smlnj-lib.cm   
+            ../ast/sources.cm
+            ../c/sources.cm
+			
+			ast2.sig
+			ast2.fun
+			
+			genAST2.sig
+			genAST2.fun
+			
+			genC.sig
+			genC.fun
+			

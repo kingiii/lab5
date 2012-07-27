@@ -1,0 +1,244 @@
+functor genC (S : GENC_STRUCTS) : GENC =
+struct
+
+open S
+
+structure generator =
+struct
+
+exception AddYourCodeHere
+
+
+fun genBinopTipe(b:Ast2.Binop.t) :CAst.Tipe.t= 
+    case b 
+     of Ast2.Binop.Plus => CAst.Tipe.Int
+      | Ast2.Binop.Minus => CAst.Tipe.Int
+      | Ast2.Binop.Times => CAst.Tipe.Int
+      | Ast2.Binop.Div => CAst.Tipe.Int
+      | Ast2.Binop.Mod => CAst.Tipe.Int
+      | Ast2.Binop.And => CAst.Tipe.Bool
+      | Ast2.Binop.Or => CAst.Tipe.Bool
+      | Ast2.Binop.Gt => CAst.Tipe.Bool
+      | Ast2.Binop.Lt => CAst.Tipe.Bool
+      | Ast2.Binop.Eq => CAst.Tipe.Bool
+      | Ast2.Binop.Le => CAst.Tipe.Bool
+      | Ast2.Binop.Ge => CAst.Tipe.Bool
+      | Ast2.Binop.Neq => CAst.Tipe.Bool
+
+(*use to generate name of tmp var, junk_0, junk_1, junk_2,...*)	
+val refVars = ref 0
+fun newVars () =
+    let val t = !refVars
+        val _ = refVars := t + 1
+    in  String.concat ["junk", "_", Int.toString t]
+    end
+
+(*use to store data structs generate from class*)		
+val structList: CAst.Struct.t list ref = ref []
+fun addStruct (s: CAst.Struct.t) =
+    let val t = !structList
+	val _ = structList := t@[s]
+    in
+	()
+    end
+
+(*use to store vtable structs generate from class*)	
+val structsVtblList: CAst.Struct_Vtable.t list ref = ref []
+fun addStructVtbl (s: CAst.Struct_Vtable.t) =
+    let val t = !structsVtblList
+	val _ = structsVtblList := t@[s]
+    in
+	()
+    end
+
+(*use to store methods*)	
+val methodList: CAst.Method.t list ref = ref []
+fun addMethod (s: CAst.Method.t) =
+    let val t = !methodList
+	val _ = methodList := t@[s]
+    in
+	()
+    end
+
+(*use to store statements*)	
+val stmList: CAst.Stm.t list ref = ref []
+fun addStm (s: CAst.Stm.t) =
+    let val t = !stmList
+	val _ = stmList := t@[s]
+    in
+	()
+    end
+
+(* use to store declaration of local var, it can be 
+ * use to judgement whether a var is local var or not
+ *)	    
+val localsList: {id:string, ty:CAst.Tipe.t} list ref = ref []
+val localsArgsList: {id:string, ty:CAst.Tipe.t} list ref = ref []
+fun addLocal (s: {id:string, ty:CAst.Tipe.t}) =
+    let val t1 = !localsList
+	val t2 = !localsArgsList
+	val _ = localsList := t1@[s]
+	val _ = localsArgsList := t2@[s]
+    in
+	()
+    end
+
+fun find(varName:string, []):{id:string,ty:CAst.Tipe.t} = {id="", ty=CAst.Tipe.Name("")}
+  | find(varName:string, (x::xs):{id:string, ty:CAst.Tipe.t} list):{id:string,ty:CAst.Tipe.t} =
+    let 
+	val {id=id1, ty=ty1}=x
+	val result = 
+	    if id1=varName then x
+	    else find(varName, xs)
+    in
+	result
+    end
+fun isLocalVar(varName:string):bool = 
+    let val {id=id1, ty=ty1} = find(varName, !localsArgsList)
+    in
+	if id1 = "" then false
+	else true
+    end
+
+(*use to store name of class being translated*)	
+val  currentClassName = ref ""
+
+(*use to store reference to whole program*)	
+val prog_ref: Ast2.Program.t ref = ref Ast2.Program.bogus
+
+fun genTipe (tipe: Ast2.Tipe.t): CAst.Tipe.t = 
+    case tipe of
+	Ast2.Tipe.Int => CAst.Tipe.Int
+      | Ast2.Tipe.Bool => CAst.Tipe.Bool
+      | Ast2.Tipe.ArrayInt => CAst.Tipe.ArrayInt
+      | Ast2.Tipe.Name(str) => CAst.Tipe.Name(str)
+
+(*get type of expression*)				       
+fun getExpTipe(arg: Ast2.Exp.t) : CAst.Tipe.t = 
+    case arg
+     of Ast2.Exp.Inti i =>  CAst.Tipe.Int
+      | Ast2.Exp.True => CAst.Tipe.Bool
+      | Ast2.Exp.False => CAst.Tipe.Bool
+      | Ast2.Exp.Var {id, pointer, pos} =>
+	let val {id=id1, ty=ty1} = find(id, !localsArgsList)
+	in
+	    if id1 = "" then
+		CAst.Tipe.Name("error type")
+	    else
+		ty1
+	end
+      | Ast2.Exp.Binop (e1, b, e2, pos) => genBinopTipe(b)
+      | Ast2.Exp.NewArray (e, pos) => CAst.Tipe.ArrayInt
+      | Ast2.Exp.NewId (id, pos) => CAst.Tipe.Name((id ^ " *"))
+      | Ast2.Exp.This pos => CAst.Tipe.Int (*this will not be executed*)     
+      | Ast2.Exp.Not (e, pos) => CAst.Tipe.Bool
+      | Ast2.Exp.Length (e, pos) => CAst.Tipe.Int
+      | Ast2.Exp.Call (e1, ety, id, retty, es, pos) => genTipe(retty)
+      | Ast2.Exp.SimpleCall (id, retty, es, pos) => genTipe(retty)
+      | Ast2.Exp.Array (e1, e2, pos) => CAst.Tipe.Int 
+      | Ast2.Exp.ParenExp(e, pos) => getExpTipe(e)
+
+(* store declaration of global object of vtable struct
+ *   name of vtable struct   |   name of global object of this vtable struct
+ *        Vtable_A           |      obj_Vtable_A
+ *)	
+val globalVarList: {id:string, ty:CAst.Tipe.t} list ref = ref []
+fun addGlobal (s: {id:string, ty:CAst.Tipe.t}) =
+    let val t = !globalVarList
+	val _ = globalVarList := t@[s]
+    in
+	()
+    end
+
+(*get init global object of vtable struct, these statements are in initVtables()*)			
+val initStmList: CAst.Stm.t list ref = ref []
+fun addInitStm (s: CAst.Stm.t) =
+    let val t = !initStmList
+	val _ = initStmList := t@[s]
+    in
+	()
+    end	
+
+fun genPos (pos1: Ast2.pos) = 
+    let 
+	val newpos:int = pos1
+	val newpos1: CAst.pos = newpos
+    in
+	newpos1
+    end
+    
+fun genBinop(binop: Ast2.Binop.t): CAst.Binop.t = 
+    case binop of 
+	Ast2.Binop.Plus => CAst.Binop.Plus
+      | Ast2.Binop.Minus => CAst.Binop.Minus
+      | Ast2.Binop.Times => CAst.Binop.Times
+      | Ast2.Binop.Div => CAst.Binop.Div
+      | Ast2.Binop.Mod => CAst.Binop.Mod
+      | Ast2.Binop.And => CAst.Binop.And
+      | Ast2.Binop.Or => CAst.Binop.Or
+      | Ast2.Binop.Lt => CAst.Binop.Lt
+      | Ast2.Binop.Gt => CAst.Binop.Gt
+      | Ast2.Binop.Eq => CAst.Binop.Eq
+      | Ast2.Binop.Ge => CAst.Binop.Ge
+      | Ast2.Binop.Le => CAst.Binop.Le
+      | Ast2.Binop.Neq => CAst.Binop.Neq
+			  
+fun genExps([]:Ast2.Exp.t list):(CAst.Exp.t list * CAst.Stm.t list)= ([], [])
+  | genExps(x::xs) = 
+    let 
+	val (e1,s1) = genExp(x)
+	val (es,ss) = genExps(xs)
+    in
+	((e1::es), (s1@ss))
+    end
+    
+and genExp (exp: Ast2.Exp.t): (CAst.Exp.t * CAst.Stm.t list) =
+    case exp of
+	Ast2.Exp.Inti(i) => (CAst.Exp.Inti(i), [])
+      | Ast2.Exp.True => (CAst.Exp.True, [])
+      | Ast2.Exp.False => (CAst.Exp.False, [])
+      | Ast2.Exp.Var{id = str, pointer = p, pos = pos1} =>
+	let 
+	    val result = 
+		if isLocalVar(str) then
+		    CAst.Exp.Var{id = str, pointer = p, pos = genPos(pos1)}
+		else
+		    CAst.Exp.Var{id = ("this->" ^ str), pointer = "", pos = genPos(pos1)}
+	in
+	    (result, [])
+	end
+      | _ =>  raise AddYourCodeHere(*you maybe need to add cases to deal with the rest expressions*)
+
+fun genStms([]:Ast2.Stm.t list): CAst.Stm.t list= []
+  | genStms(x::xs) = 
+    let 
+	val s1 = genStm(x)
+    in
+	s1@genStms(xs)
+    end
+    
+and genStm (stm: Ast2.Stm.t): CAst.Stm.t list=
+    case stm
+     of Ast2.Stm.If (e, ss1, ss2, pos) => 
+	let
+	    val (new_e, s1) = genExp(e)
+	    val new_ss1 = genStms(ss1)
+	    val new_ss2 = genStms(ss2)
+	in
+	    s1@[CAst.Stm.If (new_e, new_ss1, new_ss2, genPos(pos))]
+	end
+	
+      | _ => raise AddYourCodeHere(*you maybe need to add cases to deal with the rest statements*)
+		   
+fun genMethod (f:Ast2.Method.t) = raise AddYourCodeHere
+					
+fun genMainClass(f:Ast2.MainClass.t) = raise AddYourCodeHere
+					     
+fun genClass (class: Ast2.Class.t) = raise AddYourCodeHere
+					   
+fun genProg (f:Ast2.Program.t): CAst.Program.t = raise AddYourCodeHere
+						       
+end
+
+val gen = generator.genProg
+end
